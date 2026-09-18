@@ -37,10 +37,8 @@ export default function Finance() {
   const commission = sum((r) => r.type === 'commission')
 
   return (
-    <MobileLayout>
+    <MobileLayout title="ສະຫຼຸບການເງິນ">
       <div className="flex flex-col gap-4 p-5">
-        <span className="text-base font-semibold">ສະຫຼຸບການເງິນ</span>
-
         {error && (
           <p className="rounded-xl border border-danger/30 bg-danger/5 p-3 text-sm text-danger">{error}</p>
         )}

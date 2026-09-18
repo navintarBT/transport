@@ -1,38 +1,35 @@
 import sharp from 'sharp'
 import { mkdirSync } from 'node:fs'
 
-const CUBE_PATH =
-  'M12 3l8 4.2v9.6L12 21l-8-4.2V7.2L12 3z M12 3v9M12 12l8-4.2M12 12L4 7.8'
-
-function iconSvg({ size, iconScale, cornerRadius = 0 }) {
-  const iconSize = 24 * iconScale
-  const offset = (size - iconSize) / 2
-  return `
-<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#635BFF"/>
-      <stop offset="1" stop-color="#4338CA"/>
-    </linearGradient>
-  </defs>
-  <rect width="${size}" height="${size}" rx="${cornerRadius}" fill="url(#bg)"/>
-  <g transform="translate(${offset} ${offset}) scale(${iconScale})" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="${CUBE_PATH}"/>
-  </g>
-</svg>`
-}
+const SOURCE = 'src/assets/brand-logo.jpg'
 
 mkdirSync('public/icons', { recursive: true })
 
 const targets = [
-  { file: 'public/icons/icon-192.png', size: 192, iconScale: 192 * 0.58 / 24 },
-  { file: 'public/icons/icon-512.png', size: 512, iconScale: 512 * 0.58 / 24 },
-  { file: 'public/icons/maskable-512.png', size: 512, iconScale: 512 * 0.42 / 24 },
-  { file: 'public/apple-touch-icon.png', size: 180, iconScale: (180 * 0.58 / 24), cornerRadius: 0 },
+  { file: 'public/icons/icon-192.png', size: 192 },
+  { file: 'public/icons/icon-512.png', size: 512 },
+  { file: 'public/apple-touch-icon.png', size: 180 },
+  { file: 'public/favicon.png', size: 48 },
 ]
 
 for (const t of targets) {
-  const svg = iconSvg(t)
-  await sharp(Buffer.from(svg)).png().toFile(t.file)
+  await sharp(SOURCE).resize(t.size, t.size).png().toFile(t.file)
   console.log('wrote', t.file)
 }
+
+// Maskable icon: Android may crop to a circle, so pad the badge inward
+// to keep it inside the safe zone (centered 80% of the canvas).
+const maskableSize = 512
+const inner = Math.round(maskableSize * 0.8)
+await sharp(SOURCE)
+  .resize(inner, inner)
+  .extend({
+    top: Math.floor((maskableSize - inner) / 2),
+    bottom: Math.ceil((maskableSize - inner) / 2),
+    left: Math.floor((maskableSize - inner) / 2),
+    right: Math.ceil((maskableSize - inner) / 2),
+    background: '#000000',
+  })
+  .png()
+  .toFile('public/icons/maskable-512.png')
+console.log('wrote public/icons/maskable-512.png')

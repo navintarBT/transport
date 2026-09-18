@@ -48,29 +48,29 @@ export default function BranchStatus() {
   }
 
   return (
-    <MobileLayout>
+    <MobileLayout
+      title="ສະຖານະພັດສະດຸ"
+      action={
+        <button
+          onClick={() => history.push('/scan')}
+          className="flex items-center gap-2 rounded-full border-2 border-secondary px-5 py-3 text-base font-semibold text-secondary transition-all active:scale-95 active:bg-secondary/10"
+        >
+          <IonIcon icon={scanOutline} className="text-xl" />
+          ສະແກນ
+        </button>
+      }
+    >
       <div className="flex flex-col gap-4 p-5">
-        <div className="flex items-center justify-between">
-          <span className="text-base font-semibold">ສະຖານະພັດສະດຸ</span>
-          <button
-            onClick={() => history.push('/scan')}
-            className="flex items-center gap-1.5 rounded-full bg-gradient-to-b from-[#635BFF] to-[#4338CA] px-4 py-2 text-xs font-semibold text-white shadow-md shadow-primary/25 transition-all active:scale-95"
-          >
-            <IonIcon icon={scanOutline} className="text-sm" />
-            ສະແກນຮັບເຄື່ອງ
-          </button>
-        </div>
-
         <div className="flex gap-2 overflow-x-auto pb-0.5">
           {branches.map((b) => (
             <button
               key={b.id}
               onClick={() => setSelected(b.id)}
               className={
-                'shrink-0 rounded-full px-4 py-1.5 text-xs transition-all duration-150 active:scale-95 ' +
+                'shrink-0 rounded-full border px-4 py-1.5 text-xs transition-all duration-150 active:scale-95 ' +
                 (selected === b.id
-                  ? 'bg-gradient-to-b from-[#635BFF] to-[#4338CA] font-semibold text-white shadow-md shadow-primary/25'
-                  : 'border border-border bg-surface text-muted shadow-sm')
+                  ? 'border-primary bg-primary-tint font-semibold text-primary'
+                  : 'border-border bg-surface text-muted shadow-sm')
               }
             >
               {b.name}

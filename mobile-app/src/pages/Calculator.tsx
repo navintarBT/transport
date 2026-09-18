@@ -57,15 +57,15 @@ export default function Calculator() {
   }
 
   return (
-    <MobileLayout>
+    <MobileLayout
+      title="ຄິດໄລ່ລາຄາ"
+      action={
+        <button onClick={resetDefaults} className="text-xs font-medium text-primary">
+          ຣີເຊັດຄ່າເລີ່ມຕົ້ນ
+        </button>
+      }
+    >
       <div className="flex flex-col gap-4 p-5">
-        <div className="flex items-center justify-between">
-          <span className="text-base font-semibold">ຄິດໄລ່ລາຄາພັດສະດຸ</span>
-          <button onClick={resetDefaults} className="text-xs font-medium text-primary">
-            ຣີເຊັດຄ່າເລີ່ມຕົ້ນ
-          </button>
-        </div>
-
         {/* weight + dimensions */}
         <Card className="flex flex-col gap-3 p-4">
           <NumField label="ນ້ຳໜັກ (ກກ.)" value={weightKg} onChange={setWeightKg} />

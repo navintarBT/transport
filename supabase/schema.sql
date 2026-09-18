@@ -1,4 +1,4 @@
--- ClearWay parcel-tracking schema
+-- Bounmixay (ບຸນມີໄຊ ຂົນສົ່ງດ່ວນລາວຈີນ) parcel-tracking schema
 -- Run this once in the Supabase SQL editor (or via `supabase db push`)
 -- after creating the project. Requires the pgcrypto/gen_random_uuid()
 -- extension, which Supabase enables by default.

@@ -75,7 +75,10 @@ export default function Scan() {
     <div className="relative h-screen w-screen overflow-hidden bg-black text-white">
       <video ref={videoRef} className="h-full w-full object-cover" muted playsInline />
 
-      <div className="absolute inset-x-0 top-0 flex items-center justify-between p-5">
+      <div
+        className="absolute inset-x-0 top-0 flex items-center justify-between p-5"
+        style={{ paddingTop: 'calc(1.25rem + env(safe-area-inset-top))' }}
+      >
         <span className="text-base font-semibold">ສະແກນຮັບເຄື່ອງ</span>
         <button
           onClick={() => history.goBack()}

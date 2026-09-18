@@ -15,6 +15,7 @@ import {
 } from 'ionicons/icons'
 import { useAuth } from '../lib/auth'
 import { supabase } from '../lib/supabase'
+import logo from '../assets/brand-logo.jpg'
 
 const NAV_ITEMS = [
   { path: '/dashboard', label: 'ໜ້າຫຼັກ', icon: homeOutline },
@@ -66,10 +67,8 @@ export default function MainLayout({
       {/* Sidebar */}
       <aside className="flex w-60 shrink-0 flex-col gap-5 border-r border-border bg-surface p-3 print:hidden">
         <div className="flex items-center gap-2.5 px-2 pt-1">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-[#4338CA] shadow-sm">
-            <IonIcon icon={cubeOutline} className="text-lg text-white" />
-          </span>
-          <span className="font-semibold tracking-tight">ClearWay</span>
+          <img src={logo} alt="ບຸນມີໄຊ" className="h-9 w-9 rounded-full object-cover shadow-sm" />
+          <span className="font-semibold tracking-tight">ບຸນມີໄຊ</span>
         </div>
 
         <div className="flex h-9 items-center rounded-lg border border-border bg-bg/60 px-3 text-sm text-ink">

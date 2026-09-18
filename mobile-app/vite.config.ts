@@ -13,8 +13,8 @@ export default defineConfig({
         type: 'module',
       },
       manifest: {
-        name: 'ClearWay — ສະຫຼຸບຍອດສາຂາ',
-        short_name: 'ClearWay',
+        name: 'ບຸນມີໄຊ ຂົນສົ່ງດ່ວນລາວຈີນ',
+        short_name: 'ບຸນມີໄຊ',
         description: 'ເບິ່ງສະຫຼຸບຍອດຂາຍ, ລາຍງານການເງິນ, ແລະ ສະຖານະພັດສະດຸແຍກຕາມສາຂາ',
         theme_color: '#4F46E5',
         background_color: '#F8FAFC',

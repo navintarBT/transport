@@ -1,9 +1,8 @@
 import { useState, type FormEvent } from 'react'
 import { useHistory } from 'react-router-dom'
-import { IonIcon } from '@ionic/react'
-import { cubeOutline } from 'ionicons/icons'
 import { supabase } from '../lib/supabase'
 import { Button } from '../components/ui'
+import logo from '../assets/brand-logo.jpg'
 
 export default function Login() {
   const history = useHistory()
@@ -29,18 +28,20 @@ export default function Login() {
 
   return (
     <div
-      className="flex min-h-screen items-center justify-center p-6 text-ink"
-      style={{ background: 'radial-gradient(circle at 30% 15%, #EEF2FF 0%, #F8FAFC 50%)' }}
+      className="flex h-full min-h-screen items-center justify-center overflow-y-auto p-6 text-ink"
+      style={{
+        background: 'radial-gradient(circle at 30% 15%, #EEF2FF 0%, #F8FAFC 50%)',
+        paddingTop: 'calc(1.5rem + env(safe-area-inset-top))',
+        paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom))',
+      }}
     >
       <form onSubmit={handleSubmit} className="flex w-full max-w-sm flex-col gap-6 rounded-3xl border border-border bg-surface p-8 shadow-xl shadow-primary/5">
-        <div className="flex items-center gap-2.5">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-[#4338CA] shadow-sm">
-            <IonIcon icon={cubeOutline} className="text-lg text-white" />
-          </span>
-          <span className="font-semibold tracking-tight">ClearWay</span>
+        <div className="flex flex-col items-center gap-3 text-center">
+          <img src={logo} alt="ບຸນມີໄຊ" className="h-24 w-24 rounded-full object-cover shadow-md" />
+          <span className="text-lg font-bold tracking-tight">ບຸນມີໄຊ ຂົນສົ່ງດ່ວນລາວຈີນ</span>
         </div>
 
-        <div>
+        <div className="text-center">
           <h1 className="text-xl font-semibold tracking-tight">ເຂົ້າສູ່ລະບົບ</h1>
           <p className="text-sm text-muted">ສຳລັບຜູ້ບໍລິຫານ/ຫົວໜ້າສາຂາ</p>
         </div>

@@ -1,9 +1,8 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { IonIcon } from '@ionic/react'
-import { cubeOutline } from 'ionicons/icons'
 import { supabase } from '../lib/supabase'
 import { Button } from '../components/ui'
+import logo from '../assets/brand-logo.jpg'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -36,14 +35,12 @@ export default function Login() {
         onSubmit={handleSubmit}
         className="flex w-[400px] flex-col gap-6 rounded-2xl border border-border bg-surface p-10 shadow-xl shadow-primary/5"
       >
-        <div className="flex items-center gap-2.5">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-[#4338CA] shadow-sm">
-            <IonIcon icon={cubeOutline} className="text-lg text-white" />
-          </span>
-          <span className="font-semibold tracking-tight">ClearWay</span>
+        <div className="flex flex-col items-center gap-3 text-center">
+          <img src={logo} alt="ບຸນມີໄຊ" className="h-24 w-24 rounded-full object-cover shadow-md" />
+          <span className="text-lg font-bold tracking-tight">ບຸນມີໄຊ ຂົນສົ່ງດ່ວນລາວຈີນ</span>
         </div>
 
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 text-center">
           <h1 className="text-2xl font-semibold tracking-tight">ເຂົ້າສູ່ລະບົບ</h1>
           <p className="text-sm text-muted">ລະບົບຄຸ້ມຄອງພັດສະດຸ ແລະ ການເງິນ</p>
         </div>
@@ -56,7 +53,7 @@ export default function Login() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="ເຊັ່ນ kitti@clearway.la"
+              placeholder="ເຊັ່ນ kitti@bounmixay.la"
               className="h-11 rounded-lg border border-border px-3.5 text-[15px] outline-none focus:border-primary focus:ring-3 focus:ring-primary-tint"
             />
           </label>

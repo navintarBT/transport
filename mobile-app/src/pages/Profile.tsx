@@ -14,9 +14,8 @@ export default function Profile() {
   }
 
   return (
-    <MobileLayout>
+    <MobileLayout title="ໂປຣໄຟລ໌">
       <div className="flex flex-col gap-4 p-5">
-        <span className="text-base font-semibold">ໂປຣໄຟລ໌</span>
         <Card className="p-2">
           <button
             onClick={handleSignOut}

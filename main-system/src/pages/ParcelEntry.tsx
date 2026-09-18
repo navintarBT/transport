@@ -8,6 +8,7 @@ import { DEFAULT_RATE_PER_KG, DEFAULT_RATE_PER_M3, DEFAULT_TIERS, calculatePrice
 import { Button, PageHeader } from '../components/ui'
 import { Barcode } from '../components/Barcode'
 import { formatKip, type Parcel } from '../lib/types'
+import logo from '../assets/brand-logo.jpg'
 
 function generateTrackingNo() {
   const n = Math.floor(10000 + Math.random() * 89999)
@@ -360,7 +361,8 @@ export default function ParcelEntry() {
 
       {savedParcel && (
         <div className="mx-auto hidden w-[340px] flex-col items-center gap-3 border-2 border-dashed border-ink p-6 text-ink print:flex">
-          <span className="text-lg font-bold tracking-tight">ClearWay</span>
+          <img src={logo} alt="ບຸນມີໄຊ" className="h-14 w-14 rounded-full object-cover" />
+          <span className="text-lg font-bold tracking-tight">ບຸນມີໄຊ ຂົນສົ່ງດ່ວນລາວຈີນ</span>
           <Barcode value={savedParcel.tracking_no} />
           <div className="w-full border-t border-ink/30 pt-3 text-sm">
             <p>
