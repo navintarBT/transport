@@ -14,12 +14,14 @@
     "@ionic/react-router": "^9.0.3",
     "@supabase/supabase-js": "^2.116.0",
     "ionicons": "^8.1.0",
+    "jsbarcode": "^3.12.3",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^6.30.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
+    "@types/jsbarcode": "^3.11.4",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",

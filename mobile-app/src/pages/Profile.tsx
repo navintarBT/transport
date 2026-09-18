@@ -1,22 +1,31 @@
-import { useNavigate } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+import { IonIcon } from '@ionic/react'
+import { logOutOutline } from 'ionicons/icons'
 import MobileLayout from '../layouts/MobileLayout'
 import { supabase } from '../lib/supabase'
+import { Card } from '../components/ui'
 
 export default function Profile() {
-  const navigate = useNavigate()
+  const history = useHistory()
 
   async function handleSignOut() {
     await supabase.auth.signOut()
-    navigate('/login')
+    history.push('/login')
   }
 
   return (
     <MobileLayout>
       <div className="flex flex-col gap-4 p-5">
         <span className="text-base font-semibold">ໂປຣໄຟລ໌</span>
-        <button onClick={handleSignOut} className="h-12 rounded-full border border-border text-sm font-semibold text-ink/80">
-          ອອກຈາກລະບົບ
-        </button>
+        <Card className="p-2">
+          <button
+            onClick={handleSignOut}
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-2xl text-sm font-semibold text-danger transition-colors active:bg-danger/5"
+          >
+            <IonIcon icon={logOutOutline} className="text-base" />
+            ອອກຈາກລະບົບ
+          </button>
+        </Card>
       </div>
     </MobileLayout>
   )

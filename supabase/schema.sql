@@ -26,6 +26,8 @@ create table customers (
   created_at timestamptz not null default now()
 );
 
+-- A parcel arrives from China into a branch and sits there until the
+-- customer comes and picks it up in person — there is no door delivery.
 create table parcels (
   id uuid primary key default gen_random_uuid(),
   tracking_no text not null unique,
@@ -38,10 +40,13 @@ create table parcels (
   customer_id uuid references customers(id),
   weight_kg numeric(6, 2),
   parcel_type text not null default 'general' check (parcel_type in ('document', 'general', 'cold')),
+  cost_amount numeric(10, 2) not null default 0,
   cod_amount numeric(10, 2) not null default 0,
-  status text not null default 'pending' check (status in ('pending', 'in_transit', 'delivered', 'returned')),
+  status text not null default 'pending_pickup' check (status in ('pending_pickup', 'picked_up', 'returned')),
+  is_damaged boolean not null default false,
+  damage_note text,
   created_at timestamptz not null default now(),
-  delivered_at timestamptz
+  picked_up_at timestamptz
 );
 
 create table transactions (

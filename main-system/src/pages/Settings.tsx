@@ -1,6 +1,9 @@
 import { useNavigate } from 'react-router-dom'
+import { IonIcon } from '@ionic/react'
+import { logOutOutline } from 'ionicons/icons'
 import MainLayout from '../layouts/MainLayout'
 import { supabase } from '../lib/supabase'
+import { Button, Card, PageHeader } from '../components/ui'
 
 export default function Settings() {
   const navigate = useNavigate()
@@ -12,13 +15,14 @@ export default function Settings() {
 
   return (
     <MainLayout title="ຕັ້ງຄ່າ">
-      <h1 className="text-lg font-semibold">ຕັ້ງຄ່າ</h1>
-      <button
-        onClick={handleSignOut}
-        className="mt-4 h-11 rounded-md border border-border px-6 text-sm font-semibold text-ink/80"
-      >
-        ອອກຈາກລະບົບ
-      </button>
+      <PageHeader title="ຕັ້ງຄ່າ" />
+
+      <Card className="max-w-md p-5">
+        <Button variant="danger" onClick={handleSignOut} className="h-11 w-full">
+          <IonIcon icon={logOutOutline} className="text-base" />
+          ອອກຈາກລະບົບ
+        </Button>
+      </Card>
     </MainLayout>
   )
 }

@@ -1,11 +1,13 @@
-import { IonApp } from '@ionic/react'
+import { IonApp, IonRouterOutlet } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route } from 'react-router-dom'
 import { AuthProvider, RequireAuth } from './lib/auth'
 
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import ParcelEntry from './pages/ParcelEntry'
+import Parcels from './pages/Parcels'
+import PendingPickup from './pages/PendingPickup'
 import Customers from './pages/Customers'
 import FinancialReport from './pages/FinancialReport'
 import Branches from './pages/Branches'
@@ -16,7 +18,7 @@ function App() {
     <IonApp>
       <AuthProvider>
         <IonReactRouter>
-          <Routes>
+          <IonRouterOutlet>
             <Route path="/login" element={<Login />} />
             <Route
               path="/dashboard"
@@ -27,10 +29,26 @@ function App() {
               }
             />
             <Route
-              path="/parcels/new"
+              path="/receive"
               element={
                 <RequireAuth>
                   <ParcelEntry />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/parcels"
+              element={
+                <RequireAuth>
+                  <Parcels />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/pending"
+              element={
+                <RequireAuth>
+                  <PendingPickup />
                 </RequireAuth>
               }
             />
@@ -67,7 +85,7 @@ function App() {
               }
             />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          </Routes>
+          </IonRouterOutlet>
         </IonReactRouter>
       </AuthProvider>
     </IonApp>

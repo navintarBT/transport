@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
+import { IonIcon } from '@ionic/react'
+import { walletOutline, cashOutline, checkmarkDoneOutline, alertCircleOutline, receiptOutline } from 'ionicons/icons'
 import MainLayout from '../layouts/MainLayout'
 import { supabase } from '../lib/supabase'
 import { formatKip, type Transaction } from '../lib/types'
+import { Card, EmptyState, PageHeader } from '../components/ui'
 
 const TYPE_LABEL: Record<Transaction['type'], string> = {
   shipping_fee: 'ຄ່າສົ່ງ',
@@ -36,22 +39,22 @@ export default function FinancialReport() {
 
   return (
     <MainLayout title="ລາຍງານການເງິນ">
-      <h1 className="text-lg font-semibold">ລາຍງານການເງິນ</h1>
+      <PageHeader title="ລາຍງານການເງິນ" />
 
       {error && (
-        <p className="mt-4 rounded-md border border-danger/30 bg-danger/5 p-3 text-sm text-danger">
+        <p className="mb-5 rounded-lg border border-danger/30 bg-danger/5 p-3 text-sm text-danger">
           ໂຫຼດຂໍ້ມູນບໍ່ສຳເລັດ: {error} — ກວດສອບວ່າໄດ້ແລ່ນ supabase/schema.sql ແລ້ວຫຼືບໍ່
         </p>
       )}
 
-      <div className="mt-4 grid grid-cols-4 gap-5">
-        <SummaryCard label="ລາຍຮັບລວມ" value={sum(revenue)} />
-        <SummaryCard label="ຄ່າຄອມມິຊັນ" value={sum(commission)} />
-        <SummaryCard label="ຍອດ COD ເກັບແລ້ວ" value={sum(codPaid)} />
-        <SummaryCard label="ຍອດຄ້າງເກັບ" value={sum(codPending)} warning />
+      <div className="grid grid-cols-4 gap-5">
+        <SummaryCard label="ລາຍຮັບລວມ" value={sum(revenue)} icon={walletOutline} iconColor="#4F46E5" />
+        <SummaryCard label="ຄ່າຄອມມິຊັນ" value={sum(commission)} icon={receiptOutline} iconColor="#64748B" />
+        <SummaryCard label="ຍອດ COD ເກັບແລ້ວ" value={sum(codPaid)} icon={checkmarkDoneOutline} iconColor="#16A34A" />
+        <SummaryCard label="ຍອດຄ້າງເກັບ" value={sum(codPending)} icon={alertCircleOutline} warning />
       </div>
 
-      <div className="mt-5 rounded-lg border border-border bg-surface">
+      <Card className="mt-5">
         <div className="border-b border-border/60 px-5 py-4 text-sm font-semibold">ລາຍການທຸລະກຳ</div>
         <div className="grid grid-cols-[130px_100px_140px_1fr_120px] px-5 py-2 text-xs font-medium text-muted">
           <span>ວັນທີ</span>
@@ -60,11 +63,11 @@ export default function FinancialReport() {
           <span className="text-right">ຈຳນວນເງິນ</span>
           <span className="text-right">ສະຖານະຊຳລະ</span>
         </div>
-        {rows.length === 0 && <p className="px-5 py-6 text-sm text-muted">ຍັງບໍ່ມີລາຍການທຸລະກຳ</p>}
+        {rows.length === 0 && <EmptyState icon={<IonIcon icon={cashOutline} className="text-3xl" />} message="ຍັງບໍ່ມີລາຍການທຸລະກຳ" />}
         {rows.map((r) => (
-          <div key={r.id} className="grid grid-cols-[130px_100px_140px_1fr_120px] items-center border-t border-border/60 px-5 py-2.5 text-sm">
+          <div key={r.id} className="grid grid-cols-[130px_100px_140px_1fr_120px] items-center border-t border-border/60 px-5 py-3 text-sm transition-colors hover:bg-bg/60">
             <span className="tabular text-muted">{new Date(r.created_at).toLocaleDateString('lo-LA')}</span>
-            <span>{r.branches?.name ?? '-'}</span>
+            <span className="text-ink/70">{r.branches?.name ?? '-'}</span>
             <span>{TYPE_LABEL[r.type]}</span>
             <span className={'tabular text-right font-semibold' + (r.type === 'commission' ? ' text-danger' : '')}>
               {r.type === 'commission' ? `(${formatKip(Number(r.amount))})` : formatKip(Number(r.amount))}
@@ -76,22 +79,36 @@ export default function FinancialReport() {
             </span>
           </div>
         ))}
-      </div>
+      </Card>
     </MainLayout>
   )
 }
 
-function SummaryCard({ label, value, warning }: { label: string; value: number; warning?: boolean }) {
+function SummaryCard({
+  label,
+  value,
+  icon,
+  iconColor,
+  warning,
+}: {
+  label: string
+  value: number
+  icon: string
+  iconColor?: string
+  warning?: boolean
+}) {
   return (
-    <div
-      className={
-        'rounded-lg border p-5 ' + (warning ? 'border-warning/40 bg-warning/5' : 'border-border bg-surface')
-      }
-    >
-      <p className={'mb-2 text-xs font-medium ' + (warning ? 'text-warning' : 'text-muted')}>{label}</p>
-      <p className={'tabular text-[26px] font-semibold ' + (warning ? 'text-warning' : '')}>
-        {formatKip(value)}
-      </p>
-    </div>
+    <Card className={warning ? 'border-warning/30 bg-warning/5 p-5' : 'p-5'}>
+      <div className="mb-3 flex items-center justify-between">
+        <p className={'text-xs font-medium ' + (warning ? 'text-warning' : 'text-muted')}>{label}</p>
+        <span
+          className="flex h-8 w-8 items-center justify-center rounded-lg"
+          style={{ background: warning ? 'rgba(217,119,6,0.1)' : `${iconColor}1A`, color: warning ? '#D97706' : iconColor }}
+        >
+          <IonIcon icon={icon} className="text-base" />
+        </span>
+      </div>
+      <p className={'tabular text-[26px] font-semibold ' + (warning ? 'text-warning' : '')}>{formatKip(value)}</p>
+    </Card>
   )
 }

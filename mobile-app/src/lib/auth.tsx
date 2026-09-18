@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import type { Session } from '@supabase/supabase-js'
-import { Navigate } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { supabase } from './supabase'
 
 const AuthContext = createContext<{ session: Session | null; loading: boolean }>({
@@ -36,6 +36,6 @@ export function RequireAuth({ children }: { children: ReactNode }) {
   const { session, loading } = useAuth()
 
   if (loading) return null
-  if (!session) return <Navigate to="/login" replace />
+  if (!session) return <Redirect to="/login" />
   return <>{children}</>
 }

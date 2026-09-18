@@ -21,9 +21,24 @@ body {
   background: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }
 
 .tabular {
   font-family: var(--font-num);
   font-variant-numeric: tabular-nums;
+}
+
+input,
+select,
+textarea {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+button {
+  cursor: pointer;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
 }

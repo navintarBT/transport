@@ -4,23 +4,26 @@ export type Branch = {
   created_at: string
 }
 
-export type ParcelStatus = 'pending' | 'in_transit' | 'delivered' | 'returned'
+// A parcel arrives from China into a branch and sits there until the
+// customer comes and picks it up in person — there is no door delivery.
+export type ParcelStatus = 'pending_pickup' | 'picked_up' | 'returned'
 
 export type Parcel = {
   id: string
   tracking_no: string
   branch_id: string
   receiver_name: string
+  cost_amount: number
   cod_amount: number
   status: ParcelStatus
+  is_damaged: boolean
   created_at: string
 }
 
 export const STATUS_LABEL: Record<ParcelStatus, string> = {
-  pending: 'ລໍຖ້ານຳສົ່ງ',
-  in_transit: 'ກຳລັງນຳສົ່ງ',
-  delivered: 'ນຳສົ່ງສຳເລັດ',
-  returned: 'ຕີກັບ',
+  pending_pickup: 'ລໍຖ້າລູກຄ້າມາຮັບ',
+  picked_up: 'ລູກຄ້າຮັບແລ້ວ',
+  returned: 'ສົ່ງກັບຄືນ',
 }
 
 export function formatKip(amount: number) {
@@ -28,8 +31,7 @@ export function formatKip(amount: number) {
 }
 
 export const STATUS_COLOR: Record<ParcelStatus, string> = {
-  pending: '#94A3B8',
-  in_transit: '#D97706',
-  delivered: '#16A34A',
+  pending_pickup: '#D97706',
+  picked_up: '#16A34A',
   returned: '#DC2626',
 }

@@ -10,13 +10,17 @@ import {
   settingsOutline,
   searchOutline,
   notificationsOutline,
+  archiveOutline,
+  listOutline,
 } from 'ionicons/icons'
 import { useAuth } from '../lib/auth'
 import { supabase } from '../lib/supabase'
 
 const NAV_ITEMS = [
   { path: '/dashboard', label: 'ໜ້າຫຼັກ', icon: homeOutline },
-  { path: '/parcels/new', label: 'ຮັບພັດສະດຸ', icon: cubeOutline },
+  { path: '/receive', label: 'ຮັບພັດສະດຸ', icon: cubeOutline },
+  { path: '/parcels', label: 'ລາຍການພັດສະດຸ', icon: listOutline },
+  { path: '/pending', label: 'ຂອງຄ້າງ', icon: archiveOutline },
   { path: '/customers', label: 'ລູກຄ້າ', icon: peopleOutline },
   { path: '/finance', label: 'ລາຍງານການເງິນ', icon: walletOutline },
   { path: '/branches', label: 'ສາຂາ', icon: businessOutline },
@@ -58,18 +62,18 @@ export default function MainLayout({
   }, [session])
 
   return (
-    <div className="flex h-screen w-screen bg-bg text-ink">
+    <div className="flex h-screen w-screen bg-bg text-ink print:block print:h-auto print:w-auto">
       {/* Sidebar */}
-      <aside className="flex w-60 shrink-0 flex-col gap-5 border-r border-border bg-surface p-3">
-        <div className="flex items-center gap-2.5 px-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-tint">
-            <IonIcon icon={cubeOutline} className="text-lg text-primary" />
+      <aside className="flex w-60 shrink-0 flex-col gap-5 border-r border-border bg-surface p-3 print:hidden">
+        <div className="flex items-center gap-2.5 px-2 pt-1">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-[#4338CA] shadow-sm">
+            <IonIcon icon={cubeOutline} className="text-lg text-white" />
           </span>
-          <span className="font-semibold">ClearWay</span>
+          <span className="font-semibold tracking-tight">ClearWay</span>
         </div>
 
-        <div className="flex h-9 items-center rounded-md border border-border px-3 text-sm text-ink">
-          <span>{branchName ?? 'ບໍ່ໄດ້ຕັ້ງສາຂາ'}</span>
+        <div className="flex h-9 items-center rounded-lg border border-border bg-bg/60 px-3 text-sm text-ink">
+          <span className="truncate">{branchName ?? 'ບໍ່ໄດ້ຕັ້ງສາຂາ'}</span>
         </div>
 
         <nav className="flex flex-col gap-0.5">
@@ -80,13 +84,14 @@ export default function MainLayout({
                 key={item.path}
                 onClick={() => navigate(item.path)}
                 className={
-                  'flex h-10 items-center gap-2.5 rounded-md px-4 text-sm ' +
-                  (active
-                    ? 'border-l-[3px] border-primary bg-primary-tint pl-[13px] font-semibold text-primary'
-                    : 'text-ink/70 hover:bg-bg')
+                  'group flex h-10 items-center gap-2.5 rounded-lg px-3 text-sm transition-colors duration-150 ' +
+                  (active ? 'bg-primary-tint font-semibold text-primary' : 'text-ink/65 hover:bg-bg hover:text-ink')
                 }
               >
-                <IonIcon icon={item.icon} className="text-lg" />
+                <IonIcon
+                  icon={item.icon}
+                  className={'text-lg transition-colors duration-150 ' + (active ? 'text-primary' : 'text-ink/40 group-hover:text-ink/70')}
+                />
                 <span>{item.label}</span>
               </button>
             )
@@ -95,22 +100,28 @@ export default function MainLayout({
       </aside>
 
       {/* Main */}
-      <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex h-14 shrink-0 items-center justify-between border-b border-border bg-surface px-8">
-          <span className="text-sm text-muted">{title}</span>
-          <div className="mx-8 flex h-9 max-w-md flex-1 items-center gap-2 rounded-lg border border-border px-3">
+      <div className="flex min-w-0 flex-1 flex-col print:block">
+        <header className="flex h-14 shrink-0 items-center justify-between border-b border-border bg-surface/95 px-8 backdrop-blur-sm print:hidden">
+          <span className="text-sm font-medium text-ink/70">{title}</span>
+          <div className="mx-8 flex h-9 max-w-md flex-1 items-center gap-2 rounded-lg border border-border px-3 transition-shadow focus-within:border-primary focus-within:ring-3 focus-within:ring-primary-tint">
             <IonIcon icon={searchOutline} className="text-muted" />
-            <span className="text-sm text-muted">ຄົ້ນຫາເລກພັດສະດຸ, ຊື່ລູກຄ້າ, ເບີໂທ</span>
+            <input
+              placeholder="ຄົ້ນຫາເລກພັດສະດຸ, ຊື່ລູກຄ້າ, ເບີໂທ"
+              className="w-full bg-transparent text-sm text-ink outline-none placeholder:text-muted"
+            />
           </div>
           <div className="flex items-center gap-4">
-            <IonIcon icon={notificationsOutline} className="text-xl text-ink/70" />
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-semibold text-white">
+            <button className="relative flex h-8 w-8 items-center justify-center rounded-full text-ink/60 transition-colors hover:bg-bg hover:text-ink">
+              <IonIcon icon={notificationsOutline} className="text-xl" />
+              <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full border border-surface bg-accent" />
+            </button>
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-[#4338CA] text-xs font-semibold text-white shadow-sm ring-2 ring-surface">
               {initials}
             </span>
           </div>
         </header>
 
-        <main className="flex-1 overflow-auto p-8">{children}</main>
+        <main className="flex-1 overflow-auto p-8 print:overflow-visible print:p-0">{children}</main>
       </div>
     </div>
   )

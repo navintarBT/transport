@@ -8,6 +8,10 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      devOptions: {
+        enabled: true,
+        type: 'module',
+      },
       manifest: {
         name: 'ClearWay — ສະຫຼຸບຍອດສາຂາ',
         short_name: 'ClearWay',
@@ -15,7 +19,22 @@ export default defineConfig({
         theme_color: '#4F46E5',
         background_color: '#F8FAFC',
         display: 'standalone',
+        orientation: 'any',
+        lang: 'lo',
         start_url: '/',
+        scope: '/',
+        id: '/',
+        icons: [
+          { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+          { src: '/icons/maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+        ],
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
+        navigateFallback: '/index.html',
+        navigateFallbackDenylist: [/^\/_/],
       },
     }),
   ],

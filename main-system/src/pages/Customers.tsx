@@ -1,7 +1,10 @@
 import { useEffect, useState, type FormEvent } from 'react'
+import { IonIcon } from '@ionic/react'
+import { searchOutline, peopleOutline } from 'ionicons/icons'
 import MainLayout from '../layouts/MainLayout'
 import { supabase } from '../lib/supabase'
 import type { Customer } from '../lib/types'
+import { Button, Card, EmptyState, PageHeader } from '../components/ui'
 
 export default function Customers() {
   const [customers, setCustomers] = useState<Customer[]>([])
@@ -39,47 +42,55 @@ export default function Customers() {
 
   return (
     <MainLayout title="ລູກຄ້າ">
-      <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold">ລູກຄ້າ</h1>
-        <input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="ຄົ້ນຫາຊື່ / ເບີໂທ"
-          className="h-9 w-72 rounded-full border border-border px-4 text-sm outline-none focus:border-primary"
-        />
-      </div>
+      <PageHeader
+        title="ລູກຄ້າ"
+        action={
+          <div className="flex h-9 w-72 items-center gap-2 rounded-full border border-border bg-surface px-4 transition-shadow focus-within:border-primary focus-within:ring-3 focus-within:ring-primary-tint">
+            <IonIcon icon={searchOutline} className="text-muted" />
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="ຄົ້ນຫາຊື່ / ເບີໂທ"
+              className="w-full bg-transparent text-sm outline-none placeholder:text-muted"
+            />
+          </div>
+        }
+      />
 
-      <form onSubmit={handleAdd} className="mt-4 flex items-end gap-3 rounded-lg border border-border bg-surface p-4">
+      <form
+        onSubmit={handleAdd}
+        className="flex items-end gap-3 rounded-xl border border-border bg-surface p-4 shadow-sm"
+      >
         <label className="flex flex-col gap-1 text-sm">
           <span className="text-ink/80">ຊື່ລູກຄ້າໃໝ່</span>
-          <input value={name} onChange={(e) => setName(e.target.value)} className="h-10 w-56 rounded-md border border-border px-3 text-sm outline-none focus:border-primary" />
+          <input value={name} onChange={(e) => setName(e.target.value)} className="h-10 w-56 rounded-md border border-border px-3 text-sm outline-none focus:border-primary focus:ring-3 focus:ring-primary-tint" />
         </label>
         <label className="flex flex-col gap-1 text-sm">
           <span className="text-ink/80">ເບີໂທ</span>
-          <input value={phone} onChange={(e) => setPhone(e.target.value)} className="tabular h-10 w-44 rounded-md border border-border px-3 text-sm outline-none focus:border-primary" />
+          <input value={phone} onChange={(e) => setPhone(e.target.value)} className="tabular h-10 w-44 rounded-md border border-border px-3 text-sm outline-none focus:border-primary focus:ring-3 focus:ring-primary-tint" />
         </label>
-        <button type="submit" className="h-10 rounded-md border border-border px-5 text-sm font-semibold text-ink/80">
+        <Button type="submit" variant="secondary" className="h-10 px-5">
           ເພີ່ມລູກຄ້າໃໝ່
-        </button>
+        </Button>
       </form>
 
       {error && <p className="mt-4 text-sm text-danger">{error}</p>}
 
-      <div className="mt-5 rounded-lg border border-border bg-surface">
+      <Card className="mt-5">
         <div className="grid grid-cols-[1fr_160px_160px] border-b border-border/60 px-5 py-2 text-xs font-medium text-muted">
           <span>ຊື່ລູກຄ້າ</span>
           <span>ເບີໂທ</span>
           <span>ວັນທີ່ເພີ່ມ</span>
         </div>
-        {customers.length === 0 && <p className="px-5 py-6 text-sm text-muted">ບໍ່ພົບລູກຄ້າ</p>}
+        {customers.length === 0 && <EmptyState icon={<IonIcon icon={peopleOutline} className="text-3xl" />} message="ບໍ່ພົບລູກຄ້າ" />}
         {customers.map((c) => (
-          <div key={c.id} className="grid grid-cols-[1fr_160px_160px] items-center border-t border-border/60 px-5 py-3 text-sm">
-            <span>{c.name}</span>
+          <div key={c.id} className="grid grid-cols-[1fr_160px_160px] items-center border-t border-border/60 px-5 py-3 text-sm transition-colors hover:bg-bg/60">
+            <span className="font-medium">{c.name}</span>
             <span className="tabular text-muted">{c.phone}</span>
             <span className="tabular text-muted">{new Date(c.created_at).toLocaleDateString('lo-LA')}</span>
           </div>
         ))}
-      </div>
+      </Card>
     </MainLayout>
   )
 }

@@ -1,7 +1,10 @@
 import { useEffect, useState, type FormEvent } from 'react'
+import { IonIcon } from '@ionic/react'
+import { businessOutline } from 'ionicons/icons'
 import MainLayout from '../layouts/MainLayout'
 import { supabase } from '../lib/supabase'
 import type { Branch } from '../lib/types'
+import { Button, Card, EmptyState, PageHeader } from '../components/ui'
 
 export default function Branches() {
   const [branches, setBranches] = useState<Branch[]>([])
@@ -32,27 +35,37 @@ export default function Branches() {
 
   return (
     <MainLayout title="ສາຂາ">
-      <h1 className="text-lg font-semibold">ສາຂາ</h1>
+      <PageHeader title="ສາຂາ" />
 
-      <form onSubmit={handleAdd} className="mt-4 flex items-end gap-3 rounded-lg border border-border bg-surface p-4">
+      <form
+        onSubmit={handleAdd}
+        className="flex items-end gap-3 rounded-xl border border-border bg-surface p-4 shadow-sm"
+      >
         <label className="flex flex-col gap-1 text-sm">
           <span className="text-ink/80">ຊື່ສາຂາໃໝ່</span>
-          <input value={name} onChange={(e) => setName(e.target.value)} className="h-10 w-56 rounded-md border border-border px-3 text-sm outline-none focus:border-primary" />
+          <input value={name} onChange={(e) => setName(e.target.value)} className="h-10 w-56 rounded-md border border-border px-3 text-sm outline-none focus:border-primary focus:ring-3 focus:ring-primary-tint" />
         </label>
-        <button type="submit" className="h-10 rounded-md border border-border px-5 text-sm font-semibold text-ink/80">
+        <Button type="submit" variant="secondary" className="h-10 px-5">
           ເພີ່ມສາຂາ
-        </button>
+        </Button>
       </form>
 
       {error && <p className="mt-4 text-sm text-danger">{error} (ສະເພາະຜູ້ບໍລິຫານລະບົບເທົ່ານັ້ນທີ່ເພີ່ມສາຂາໄດ້)</p>}
 
       <div className="mt-5 grid grid-cols-4 gap-4">
         {branches.map((b) => (
-          <div key={b.id} className="rounded-lg border border-border bg-surface p-4">
+          <Card key={b.id} className="flex items-center gap-3 p-4">
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-tint text-primary">
+              <IonIcon icon={businessOutline} className="text-base" />
+            </span>
             <span className="font-medium">{b.name}</span>
-          </div>
+          </Card>
         ))}
-        {branches.length === 0 && <p className="text-sm text-muted">ຍັງບໍ່ມີສາຂາ</p>}
+        {branches.length === 0 && (
+          <div className="col-span-4">
+            <EmptyState icon={<IonIcon icon={businessOutline} className="text-3xl" />} message="ຍັງບໍ່ມີສາຂາ" />
+          </div>
+        )}
       </div>
     </MainLayout>
   )
